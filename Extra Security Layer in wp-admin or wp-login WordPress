@@ -1,73 +1,133 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Secure WordPress wp-admin with .htpasswd</title>
+<title>Secure WordPress wp-admin Guide</title>
+
 <style>
-  body {font-family: Arial, sans-serif; background: #eef2f6; margin:0; padding:0;}
-  .container {max-width: 900px; background:#fff; margin:40px auto; padding:40px; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.08);}
-  h1{text-align:center; color:#1e2a38;}
-  h2{color:#2563eb; margin-top:25px;}
-  p {color:#333; line-height:1.6;}
-  .box {border-left:4px solid #2563eb; padding-left:18px; margin-bottom:28px;}
-  pre {background:#f7f8fa; padding:14px; border-radius:6px; border:1px solid #ddd; overflow:auto; font-size:15px; position:relative;}
-  .copy-btn {
-    position:absolute; right:8px; top:8px;
-    background:#2563eb; color:#fff; border:none;
-    padding:6px 10px; border-radius:5px; cursor:pointer;
-    font-size:12px;
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #4D9FEC, #4158D0);
+    font-family: "Segoe UI", sans-serif;
+    color: #fff;
   }
-  .copy-btn:hover {background:#1747b0;}
-  .done {text-align:center; background:#e8ffe8; border:1px solid #77d677; padding:18px; border-radius:8px; margin-top:35px;}
+  .container {
+    max-width: 900px;
+    background: #ffffff;
+    color: #2b2b2b;
+    margin: 60px auto;
+    padding: 40px;
+    border-radius: 14px;
+    box-shadow: 0 12px 45px rgba(0,0,0,0.25);
+    animation: fadeIn .7s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px);}
+    to   { opacity: 1; transform: translateY(0);}
+  }
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 10px;
+  }
+  .sub {
+    text-align: center;
+    margin-bottom: 35px;
+    color: #64748b;
+  }
+  .step {
+    margin-bottom: 35px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+  }
+  .step h2 {
+    margin-top: 0;
+    color: #1e3a8a;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    position: relative;
+    overflow-x: auto;
+    margin-top: 10px;
+  }
+  .copy-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.25s;
+  }
+  .copy-btn:hover {
+    background: #1746b7;
+  }
+  .done {
+    text-align: center;
+    background: #d9fce6;
+    border: 1px solid #63d18b;
+    padding: 20px;
+    margin-top: 40px;
+    border-radius: 10px;
+    color: #14532d;
+    font-weight: 600;
+  }
 </style>
 </head>
 <body>
 
 <div class="container">
+  <h1>Secure Your WordPress wp-admin</h1>
+  <p class="sub">Add additional login protection using <code>.htpasswd</code> & <code>.htaccess</code></p>
 
-  <h1>Secure WordPress wp-admin Folder</h1>
-  <p style="text-align:center; color:#555;">Add an extra password layer to protect your WordPress admin panel.</p>
-
-  <div class="box">
+  <div class="step">
     <h2>Step 1: Create .htpasswd File</h2>
-    <p>Login to cPanel and go to your WordPress root directory. Create a file named <code>.htpasswd</code> and add:</p>
+    <p>Create <code>.htpasswd</code> in your WordPress root and add credentials:</p>
     <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button>username:password</pre>
   </div>
 
-  <div class="box">
-    <h2>Step 2: Find the Full File Path</h2>
-    <p>Create a file named <code>test.php</code> in the same folder, add this code:</p>
+  <div class="step">
+    <h2>Step 2: Locate Absolute File Path</h2>
+    <p>Create <code>test.php</code> in same directory:</p>
     <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button>&lt;?php
 echo dirname(__FILE__) . '/.htpasswd';
 ?&gt;</pre>
-    <p>Open it in browser:</p>
+    <p>Open in browser:</p>
     <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button>https://yourdomain.com/test.php</pre>
-    <p>Copy the path displayed, then delete <code>test.php</code>.</p>
+    <p>Copy displayed path, then delete <code>test.php</code>.</p>
   </div>
 
-  <div class="box">
+  <div class="step">
     <h2>Step 3: Protect wp-admin</h2>
-    <p>In <code>wp-admin</code> folder create <code>.htaccess</code> file and paste:</p>
+    <p>Inside <code>wp-admin</code>, create <code>.htaccess</code>:</p>
     <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button>AuthType Basic
 AuthName "Restricted Area"
 AuthUserFile /path/to/.htpasswd
 Require valid-user</pre>
-    <p>Replace <code>/path/to/.htpasswd</code> with the copied path.</p>
+    <p>Replace <code>/path/to/.htpasswd</code> with copied path.</p>
   </div>
 
-  <div class="done">
-    <h2>✔ Setup Complete</h2>
-    <p>Your wp-admin is now protected with an additional login layer.</p>
-  </div>
-
+  <div class="done">✔ Setup Complete. Your wp-admin is now protected.</div>
 </div>
 
 <script>
-  function copyCode(btn) {
-    const code = btn.parentElement.innerText.replace("Copy","").trim();
-    navigator.clipboard.writeText(code);
-    btn.innerText = "Copied!";
-    setTimeout(()=> btn.innerText = "Copy", 1500);
-  }
+function copyCode(btn) {
+  const code = btn.parentElement.innerText.replace("Copy", "").trim();
+  navigator.clipboard.writeText(code);
+  btn.innerText = "Copied!";
+  setTimeout(() => btn.innerText = "Copy", 1400);
+}
 </script>
 
 </body>
